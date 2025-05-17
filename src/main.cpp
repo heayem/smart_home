@@ -2,15 +2,20 @@
 #include "command/led/commands.h"
 #include "network/WiFiConnector.h"
 #include "mqtt/MQTTService.h"
+#include "bluetooth/BluetoothConnector.h"
 
 WiFiConnector wifi("iphone", "12345678");
 MQTTService mqtt;
+BluetoothConnector bt;
 
 void setup()
 {
   Serial.begin(115200);
+
   wifi.connect();
   mqtt.begin();
+  bt.begin("ESP32_LED_BT");
+  bt.setCommandHandler(handleSerialCommand);
 }
 
 void loop()
@@ -21,5 +26,7 @@ void loop()
     cmd.trim();
     handleSerialCommand(cmd);
   }
-  mqtt.loop(); // Add this if required by your MQTT library
+
+  bt.listen();  
+  mqtt.loop();
 }

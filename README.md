@@ -48,3 +48,9 @@ platformio.ini                           # PlatformIO configuration
 - ESP32 DevKit (or compatible)
 - PlatformIO extension for VS Code
 - Data-capable USB cable
+
+## Feature
+  + LED controller
+    - Mobile App (MQTT, Bluetooth)
+    - Manual (Button/Switch)
+    - Report usage
