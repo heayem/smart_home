@@ -1,21 +1,23 @@
 #include <Arduino.h>
 #include "command/led/commands.h"
-#include "network/WiFiConnector.h"
-#include "mqtt/MQTTService.h"
-#include "bluetooth/BluetoothConnector.h"
+// #include "network/WiFiConnector.h"
+// #include "mqtt/MQTTService.h"
+// #include "bluetooth/BluetoothConnector.h"
 
-WiFiConnector wifi("iphone", "12345678");
-MQTTService mqtt;
-BluetoothConnector bt;
+
+// WiFiConnector wifi("iphone", "12345678");
+// MQTTService mqtt;
+// BluetoothConnector bt;
 
 void setup()
 {
   Serial.begin(115200);
+  printCommandGuide();
 
-  wifi.connect();
-  mqtt.begin();
-  bt.begin("ESP32_LED_BT");
-  bt.setCommandHandler(handleSerialCommand);
+  // wifi.connect();
+  // mqtt.begin();
+  // bt.begin("ESP32_LED_BT");
+  // bt.setCommandHandler(handleSerialCommand);
 }
 
 void loop()
@@ -27,6 +29,6 @@ void loop()
     handleSerialCommand(cmd);
   }
 
-  bt.listen();  
-  mqtt.loop();
+  // bt.listen();  
+  // mqtt.loop();
 }

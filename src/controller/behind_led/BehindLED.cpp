@@ -1,9 +1,9 @@
 #include <Arduino.h>
 #include "BehindLED.h"
 #include "model/led/LED.h"  
-#include "mqtt/MQTTService.h"
+// #include "mqtt/MQTTService.h"
 
-extern MQTTService mqtt;
+// extern MQTTService mqtt;
 
 static LED behindLED(4);
 
@@ -15,11 +15,11 @@ void setupBehindLED() {
 void turnOnBehindLED() {
     behindLED.on();
     Serial.println("Behind LED turned ON");
-    mqtt.publish("smart_home/behind_led", "on");
+    // mqtt.publish("smart_home/behind_led", "on");
 }
 
 void turnOffBehindLED() {
     behindLED.off();
     Serial.println("Behind LED turned OFF");
-    mqtt.publish("smart_home/behind_led", "off");
+    // mqtt.publish("smart_home/behind_led", "off");
 }
