@@ -20,7 +20,7 @@ void callback(char* topic, byte* payload, unsigned int length) {
 }
 
 void MQTTService::begin() {
-    client.setServer("broker.hivemq.com", 1883);
+    client.setServer("bf651860e15d4d2691514198dfecafb3.s1.eu.hivemq.cloud", 1883);  
     client.setCallback(callback);
 }
 

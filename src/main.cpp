@@ -21,5 +21,5 @@ void loop()
     cmd.trim();
     handleSerialCommand(cmd);
   }
-  // mqtt.loop(); // Add this if required by your MQTT library
+  mqtt.loop(); // Add this if required by your MQTT library
 }
