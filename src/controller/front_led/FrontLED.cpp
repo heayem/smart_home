@@ -8,7 +8,7 @@
 #include "FrontLED.h"
 #include "model/led/LED.h"
 
-static LED frontLED(2);
+static LED frontLED(17);
 
 /**
  * Initializes the front LED.

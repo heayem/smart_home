@@ -39,9 +39,10 @@
 │   └── mqtt/
 │   |    ├── MQTTService.cpp
 │   |    └── MQTTService.h
-|   |__ View/
-|        |--ButtonOn.h
-|        |--ButtonOn.cpp
+│   └── views/
+│   │   ├── screens/
+│   │   │   ├── UsageTracker.cpp
+│   │   │   └── UsageTracker.h
 ├── test/
 │   └── README
 ├── .gitignore

@@ -3,9 +3,11 @@
 
 class MQTTService {
 public:
-    void begin();
+    void begin(const char* server, int port, const char* clientId);
+    void subscribe(const char* topic);
     void loop();
     void publish(const char* topic, const char* payload);
+    bool isConnected();
 };
 
 #endif
