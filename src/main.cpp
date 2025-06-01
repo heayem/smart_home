@@ -3,21 +3,45 @@
 #include "controller/front_led/FrontLED.h"
 #include "controller/behind_led/BehindLED.h"
 #include "views/screens/TouchScreen.h"
+#include "network/WiFiConnector.h"
+#include "mqtt/MQTTService.h"
+
+const char *SSID = "Wokwi-GUEST";
+const char *PASSWORD = "";
+
+const char *MQTT_SERVER = "bf651860e15d4d2691514198dfecafb3.s1.eu.hivemq.cloud";
+const int MQTT_PORT = 8883;
+const char *MQTT_CLIENT_ID = "ESP32Client";
+const char *MQTT_TOPIC = "flutter/led";
+
+WiFiConnector wifi(SSID, PASSWORD);
+MQTTService mqtt;
 
 void setup()
 {
   Serial.begin(115200);
 
-  // setup led
+  wifi.connect();
+
+  if (wifi.isConnected())
+  {
+    Serial.println("Connected and ready!");
+    mqtt.begin(MQTT_SERVER, MQTT_PORT, MQTT_CLIENT_ID);
+    mqtt.subscribe(MQTT_TOPIC);
+  }
+  else
+  {
+    Serial.println("Connection failed.");
+  }
+
   setupFrontLED();
   setupBehindLED();
-
-  // cmd controller led
   printCommandGuide();
-
-  // touch screen
   initTouchScreen();
 }
+
+unsigned long lastSent = 0;
+const unsigned long interval = 5000;
 
 void loop()
 {
@@ -29,4 +53,12 @@ void loop()
   }
 
   handleTouch();
+
+  mqtt.loop();
+
+  if (millis() - lastSent > interval)
+  {
+    mqtt.publish(MQTT_TOPIC, "1");
+    lastSent = millis();
+  }
 }

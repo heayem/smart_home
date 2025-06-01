@@ -1,9 +1,14 @@
 #include "MQTTService.h"
-#include <WiFi.h>
+#include <WiFiClientSecure.h>
 #include <PubSubClient.h>
 
-WiFiClient espClient;
-PubSubClient client(espClient);
+WiFiClientSecure espSecureClient;
+PubSubClient client(espSecureClient);
+
+const char* mqttUsername = "hivemq.webclient.1747456168970";
+const char* mqttPassword = "D?Z4!%5jCcv1b0S>iBgP";
+
+extern void handleSerialCommand(const String &cmd); 
 
 void callback(char* topic, byte* payload, unsigned int length) {
     String message;
@@ -11,6 +16,7 @@ void callback(char* topic, byte* payload, unsigned int length) {
         message += (char)payload[i];
     }
     Serial.printf("Received on topic %s: %s\n", topic, message.c_str());
+    handleSerialCommand(message);
 
     if (strcmp(topic, "flutter/led") == 0) {
         if (message == "on") digitalWrite(2, HIGH);
@@ -19,12 +25,14 @@ void callback(char* topic, byte* payload, unsigned int length) {
 }
 
 void MQTTService::begin(const char* server, int port, const char* clientId) {
+    espSecureClient.setInsecure();
     client.setServer(server, port);
     client.setCallback(callback);
+
     while (!client.connected()) {
-        Serial.print("Connecting to MQTT...");
-        if (client.connect(clientId)) {
-            Serial.println("connected");
+        Serial.print("Connecting to MQTT... ");
+        if (client.connect(clientId, mqttUsername, mqttPassword)) {
+            Serial.println("connected!");
         } else {
             Serial.print("failed, rc=");
             Serial.println(client.state());
@@ -40,7 +48,7 @@ void MQTTService::subscribe(const char* topic) {
 void MQTTService::loop() {
     if (!client.connected()) {
         Serial.println("MQTT disconnected, retrying...");
-        begin("bf651860e15d4d2691514198dfecafb3.s1.eu.hivemq.cloud", 1883, "ESP32Client");
+        begin("bf651860e15d4d2691514198dfecafb3.s1.eu.hivemq.cloud", 8883, "ESP32Client");
     }
     client.loop();
 }
