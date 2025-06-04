@@ -1,5 +1,5 @@
 #include "TouchScreen.h"
-#include "command/led/commands.h"
+#include "command/led/LedCommands.h"
 #include <Arduino.h>
 
 // Define pins for TFT display
@@ -82,5 +82,5 @@ void handleTouch()
     Serial.printf("Touch: (%d, %d)\n", p.x, p.y);
 
     ledState = !ledState;
-    handleSerialCommand(ledState ? "1" : "2");
+    handleSerialLedCommand(ledState ? "1" : "2");
 }

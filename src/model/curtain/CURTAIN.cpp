@@ -1,36 +1,50 @@
 #include "CURTAIN.h"
 
-// Constructor, save pin to private variable
-CURTAIN::CURTAIN(uint8_t pin) : _pin(pin) {}
+CURTAIN::CURTAIN(uint8_t pin1, uint8_t pin2, uint8_t pin3, uint8_t pin4, int stepsPerRev)
+  : _stepper(stepsPerRev, pin1, pin3, pin2, pin4), _stepsPerRev(stepsPerRev) {}
 
-// Destructor, no need to do anything
 CURTAIN::~CURTAIN() {}
 
-// Initialize curtain by setting pin as output and turning off
 void CURTAIN::begin() {
-    pinMode(_pin, OUTPUT);
-    off();
+  _stepper.setSpeed(60);  // RPM
 }
 
-// Turn curtain on by setting pin high
-void CURTAIN::on() {
-    digitalWrite(_pin, HIGH);
-    _state = true;
+void CURTAIN::open() {
+  moveToLevel(100);
+  _isOpen = true;
 }
 
-// Turn curtain off by setting pin low
-void CURTAIN::off() {
-    digitalWrite(_pin, LOW);
-    _state = false;
+void CURTAIN::close() {
+  moveToLevel(0);
+  _isOpen = false;
 }
 
-// Toggle curtain, if it's on, turn it off, if it's off, turn it on
 void CURTAIN::toggle() {
-    isOn() ? off() : on();
+  _isOpen ? close() : open();
 }
 
-// Get current state of the curtain
-bool CURTAIN::isOn() const {
-    return _state;
+bool CURTAIN::isOpen() const {
+  return _isOpen;
 }
 
+void CURTAIN::setLevel(uint8_t level) {
+  if (level > 100) level = 100;
+  moveToLevel(level);
+}
+
+uint8_t CURTAIN::getLevel() const {
+  return _level;
+}
+
+void CURTAIN::moveToLevel(uint8_t targetLevel) {
+  int targetSteps = map(targetLevel, 0, 100, 0, _stepsPerRev);
+  int currentSteps = map(_level, 0, 100, 0, _stepsPerRev);
+  int stepDiff = targetSteps - currentSteps;
+
+  _stepper.step(stepDiff);
+  _level = targetLevel;
+}
+
+void CURTAIN::stop() {
+  // Placeholder - Stepper does not require stopping logic like DC motors
+}

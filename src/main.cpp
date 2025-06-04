@@ -1,7 +1,9 @@
 #include <Arduino.h>
-#include "command/led/commands.h"
+#include "command/led/LedCommands.h"
 #include "controller/front_led/FrontLED.h"
 #include "controller/behind_led/BehindLED.h"
+#include "controller/left_curtain/LeftCurtain.h"
+
 #include "views/screens/TouchScreen.h"
 #include "network/WiFiConnector.h"
 #include "mqtt/MQTTService.h"
@@ -15,6 +17,7 @@ const char *MQTT_CLIENT_ID = "ESP32Client";
 const char *MQTT_TOPIC = "flutter/led";
 
 WiFiConnector wifi(SSID, PASSWORD);
+
 MQTTService mqtt;
 
 void setup()
@@ -36,6 +39,7 @@ void setup()
 
   setupFrontLED();
   setupBehindLED();
+  setupLeftCurtain();
   printCommandGuide();
   initTouchScreen();
 }
@@ -49,16 +53,16 @@ void loop()
   {
     String cmd = Serial.readStringUntil('\n');
     cmd.trim();
-    handleSerialCommand(cmd);
+    handleSerialLedCommand(cmd);
   }
 
   handleTouch();
 
   mqtt.loop();
 
-  if (millis() - lastSent > interval)
-  {
-    mqtt.publish(MQTT_TOPIC, "1");
-    lastSent = millis();
-  }
+  // if (millis() - lastSent > interval)
+  // {
+  //   mqtt.publish(MQTT_TOPIC, "1");
+  //   lastSent = millis();
+  // }
 }

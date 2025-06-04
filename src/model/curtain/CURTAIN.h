@@ -1,34 +1,30 @@
 #pragma once
 #include <Arduino.h>
+#include <Stepper.h>
 
 /**
- * This class represents a physical curtain connected to a digital output pin on the board.
- *
- * It provides methods to control the curtain, such as begin(), on(), off(), toggle(), and isOn().
- *
- * The begin() method initializes the curtain by setting the pin as an output and turning the curtain off.
- *
- * The on() method turns the curtain on by setting the pin high.
- *
- * The off() method turns the curtain off by setting the pin low.
- *
- * The toggle() method toggles the state of the curtain.
- *
- * The isOn() method returns the current state of the curtain.
+ * Curtain control class using Stepper motor.
  */
-class CURTAIN {
+class CURTAIN
+{
 public:
-    CURTAIN(uint8_t pin);
+    CURTAIN(uint8_t pin1, uint8_t pin2, uint8_t pin3, uint8_t pin4, int stepsPerRev);
     virtual ~CURTAIN();
 
     virtual void begin();
-    virtual void on();
-    virtual void off();
+    virtual void open();
+    virtual void close();
+    virtual void stop();
     virtual void toggle();
-    virtual bool isOn() const;
+    virtual bool isOpen() const;
+    virtual void setLevel(uint8_t level);
+    virtual uint8_t getLevel() const;
 
 protected:
-    uint8_t _pin;
-    bool _state = false;
-};
+    Stepper _stepper;
+    int _stepsPerRev;
+    bool _isOpen = false;
+    uint8_t _level = 0;
 
+    void moveToLevel(uint8_t targetLevel);
+};

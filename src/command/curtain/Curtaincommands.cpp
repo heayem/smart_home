@@ -1,5 +1,5 @@
 #include <map>
-#include "commands.h"
+#include "CurtainCommands.h"
 #include "controller/front_led/FrontLED.h"
 #include "controller/behind_led/BehindLED.h"
 
@@ -17,7 +17,7 @@ static std::map<String, void (*)()> commandMap = {
 /**
  * Print the command guide to the serial console.
  */
-void printCommandGuide()
+void printCurtainCommandGuide()
 {
     Serial.println("===== Available Commands =====");
     Serial.println("1: Turn ON Front LED");
@@ -34,7 +34,7 @@ void printCommandGuide()
  *
  * @param command The command to handle.
  */
-void handleSerialCommand(const String &command)
+void handleSerialCurtainCommand(const String &command)
 {
     auto it = commandMap.find(command);
     if (it != commandMap.end())
@@ -44,6 +44,6 @@ void handleSerialCommand(const String &command)
     else
     {
         Serial.println("Unknown command \n");
-        printCommandGuide(); // Print the command guide
+        printCurtainCommandGuide(); // Print the command guide
     }
 }

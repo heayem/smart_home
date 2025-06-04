@@ -8,7 +8,7 @@ PubSubClient client(espSecureClient);
 const char* mqttUsername = "hivemq.webclient.1747456168970";
 const char* mqttPassword = "D?Z4!%5jCcv1b0S>iBgP";
 
-extern void handleSerialCommand(const String &cmd); 
+extern void handleSerialLedCommand(const String &cmd); 
 
 void callback(char* topic, byte* payload, unsigned int length) {
     String message;
@@ -16,7 +16,7 @@ void callback(char* topic, byte* payload, unsigned int length) {
         message += (char)payload[i];
     }
     Serial.printf("Received on topic %s: %s\n", topic, message.c_str());
-    handleSerialCommand(message);
+    handleSerialLedCommand(message);
 
     if (strcmp(topic, "flutter/led") == 0) {
         if (message == "on") digitalWrite(2, HIGH);

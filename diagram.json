@@ -17,6 +17,13 @@
       "top": -82.89,
       "left": 196.26,
       "attrs": { "color": "red" }
+    },
+    {
+      "type": "wokwi-stepper-motor",
+      "id": "stepper1",
+      "top": -53.99,
+      "left": -431.57,
+      "attrs": { "size": "17" }
     }
   ],
   "connections": [
@@ -25,12 +32,16 @@
     [ "lcd1:CS", "esp1:5", "orange", [ "v0" ] ],
     [ "lcd1:D/C", "esp1:15", "gold", [ "v0" ] ],
     [ "lcd1:MOSI", "esp1:23", "violet", [ "v105.6", "h-124.8", "v-144" ] ],
-    [ "lcd1:SCK", "esp1:18", "white", [ "v115.2", "h-144", "v-86.4" ] ],
+    [ "lcd1:SCK", "esp1:18", "white", [ "h-0.46", "v28.8" ] ],
     [ "esp1:19", "lcd1:MISO", "magenta", [ "h57.6", "v105.6", "h172.8" ] ],
     [ "esp1:22", "lcd1:SCL", "yellow", [ "h48", "v163.2", "h192" ] ],
     [ "esp1:21", "lcd1:SDA", "cyan", [ "h38.4", "v144", "h211.2" ] ],
-    [ "esp1:GND.2", "led1:C", "black", [ "v0", "h86.4", "v76.8", "h278.4" ] ],
-    [ "esp1:17", "led1:A", "green", [ "h0" ] ]
+    [ "esp1:GND.2", "led1:C", "black", [ "h86.4", "v88.89", "h287.6" ] ],
+    [ "esp1:17", "led1:A", "green", [ "h0" ] ],
+    [ "esp1:34", "stepper1:B-", "green", [ "h0" ] ],
+    [ "esp1:35", "stepper1:B+", "green", [ "h0" ] ],
+    [ "esp1:32", "stepper1:A+", "green", [ "h0" ] ],
+    [ "esp1:33", "stepper1:A-", "green", [ "h0" ] ]
   ],
   "dependencies": {}
 }
